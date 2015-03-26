@@ -1,0 +1,26 @@
+#Softdes Project Proposal
+*Annabel Consilvio, Maggie Jakus, Anisha Nakagawa*
+
+##The Big Idea:
+Users can input food that they have at home and the program will search a recipe database for recipes that only include ingredients they have. We will explore GUIs and optimization algorithms. Our minimum viable product is a program that takes ingredients and returns recipes that include only those ingredients.  Our stretch goal is to have a program that can take in multiple inputs and filter recipes by ethnicity, prep time, or allergies.
+
+##Learning Goals:
+**Team:** Improving pair programming & communication between group members about code structure and design.  We would also like to develop clean, readable code that is well commented.  We would also like to understand github better.
+**Annabel:**  I would like to be able to design intuitive interfaces (front-end) and also understand and learn how to write efficient optimization algorithms (back-end) so that I feel comfortable in different roles.
+**Maggie:** I would like to learn about GUIs and make them user-friendly. I’d also like to improve my code quality to make it more efficient. 
+**Anisha:** To learn how to write algorithms that are memory efficient and have a sensible code organization (with a thoughtful class hierarchy and functions)
+
+##Implementation Plan:
+We have found multiple recipe APIs such as BigOVEN and Food2Fork.
+
+##Project Schedule:
+In one week, we would like to know how our API works and know the syntax to be able to call a recipe from it. We’d also like to have a skeleton code of all the classes and functions we’ll need (without actually filling things in). In two weeks, we’d like to be able to search the API by lists of ingredients and get recipes from it that contain only those ingredients. In three weeks, we’d like to have a functioning GUI. In four weeks, we’d like to be able to put in a list of ingredients and get recipes that contain those ingredients and return recipes that contain a user-input number of ingredients they don’t have. In five weeks, we’d like to be able to add more specifications to our recipe search (food ethnicity, prep time, allergens, etc). In six weeks, we’d like to have a good-looking GUI that presents the information in a meaningful manner (and also have a presentation website!) 
+
+##Collaboration Plan:
+We will work as a group of 3 a lot at the beginning as we set up our basic structure and figure out how we will implement this. This will make sure we all have the same big picture idea, and clarify the input and return for each function. As we progress, we will work more independently but will comment thoroughly and will have frequent meetings to discuss progress and improve the code.
+
+##Risks:
+The major risk of our project will be the api/database that we use to search for recipes.  If the api/database is unable to be searched by ingredient through python code, we will be presented with a problem.  Additionally, we may have to determine how to efficiently search a database if it is too large.  Finally, none of us have significant experience with developing GUIs, so this may be a risk for us.
+
+##Additional Course Content:
+Understanding memory efficient ways of big data searching, learning about runtime and efficiency. Comparing different forms of GUIs.
