@@ -2,6 +2,11 @@
 Recipe Program Skeleton
 Anisha, Annabel, Maggie
 """
+import urllib   # urlencode function
+import urllib2  # urlopen function (better than urllib version)
+import json
+from pickle import dump, load
+from os.path import exists
 
 class User(object):
   """Class that defines a user with a specific pantry and fridge"""
@@ -16,17 +21,70 @@ class User(object):
   
   def get_name(self):
     print "What is your name?"
-    self.name = raw_input()
+    return raw_input()
 
-  def get_recipes(self):
+  def get_useful_recipes(self):
     """Generate recipes based on fridge and pantry in RecipePuppy"""
-    # Make search term
+   #  # Make search term
+   #  # get all recipes
+   #  # Format url
+   #  url = self.get_url()
 
+   # # Call list
+   #  recipe_list = self.get_recipe_list(url)
+   #  # Get rid of bad recipes
+   #  good_recipes = self.filter_recipes(recipe_list)
+   #  pass
+    all_recipes = []
+    All_Ingredients = self.fridge.ingredients + self.pantry.ingredients
+    for ingredient in All_Ingredients:
+      all_recipes += (self.get_all_recipes(ingredient))
 
-    # get all recipes
-    
-    # 
-    pass
+    for recipe in all_recipes:
+      for ingredient in recipe:
+        if ingredient not in All_Ingredients:
+          all_recipes.remove(recipe)
+
+    return all_recipes
+  
+  def get_url(self, ingredient, pagenumber):
+    """Format url for api call"""
+    url = "http://www.recipepuppy.com/api/?i=%s&p=%s" % (ingredient.name, pagenumber)
+    return url
+
+  def get_json(self, url):
+    """
+    Given a properly formatted URL for a JSON web API request, return
+    a Python JSON object containing the response to that request.
+    """
+    f = urllib2.urlopen(url)  #opens url
+    response_text = f.read()  #reads through url
+    response_data = json.loads(response_text)  #converts data to json
+    results = response_data["results"]
+    return results
+  
+  def get_all_recipes(self, ingredient):
+    """ Gets a list of all recipes for a given ingredient """
+    empty_page = []
+    recipe_list = []
+    page_empty= False
+    page_number = 1
+    while not page_empty:
+      url = self.get_url(ingredient, page_number)
+      contents = self.get_json(url)
+      if contents == empty_page:
+        page_empty = True
+      recipe_list += contents
+      page_number += 1
+    return recipe_list
+
+  
+  
+class Ingredient(object):
+  """User input ingredients that they have"""
+  def __init__(self, ingredient):
+    self.name = ingredient
+  ##will eventually put in quantity, allergns, etc.
 
   
 class Shelf(object):
@@ -48,15 +106,15 @@ class Shelf(object):
       name = raw_input()
       if name == 'Done':
         done = True
-      ingredients.append(Ingredient(name))
-    return ingredients
-    pass  
+      new_ingredient = Ingredient(name)
+      ingredients.append(new_ingredient)
+    return ingredients  
 
 
 class Pantry(Shelf):
   def __init__(self, username):
     self.username = username
-    self.ingredients = make_pantry()
+    self.ingredients = self.make_pantry()
     
   def make_pantry(self):
     # If exits, load
@@ -65,7 +123,8 @@ class Pantry(Shelf):
       self.ingredients.append(load(open(filename, "r+")))
       self.edit_pantry()      
     else:
-      self.ingredients = make_shelf()
+      print "Add ingredients to your pantry"
+      return self.make_shelf()
     # otherwise make new
   
   def edit_pantry(self):
@@ -90,23 +149,19 @@ class Pantry(Shelf):
     
 class Fridge(Shelf):
   def __init__(self):
-    self.ingredients = make_shelf()
+    self.ingredients = self.make_fridge()
     
-
-class 
-Ingredient(object):
-  """User input ingredients that they have"""
-  def __init__(self, ingredient):
-    self.name = ingredient
-  ##will eventually put in quantity, allergns, etc.
+  def make_fridge(self):
+    print "Add ingredients to your fridge"
+    return self.make_shelf()
   
  
   
   #################################### MAIN ############
 
-  if __name__ == '__main__':
-    current_user = User()
-    current_user.get_recipes()
+if __name__ == '__main__':
+  current_user = User()
+  current_user.get_useful_recipes()
   
   
   
