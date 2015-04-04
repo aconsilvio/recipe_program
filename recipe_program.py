@@ -36,20 +36,36 @@ class User(object):
    #  good_recipes = self.filter_recipes(recipe_list)
    #  pass
     all_recipes = []
+    all_ingredient_names = []
     All_Ingredients = self.fridge.ingredients + self.pantry.ingredients
     for ingredient in All_Ingredients:
       all_recipes += (self.get_all_recipes(ingredient))
+      all_ingredient_names.append(ingredient.name)
 
-    for recipe in all_recipes:
-      for ingredient in recipe:
-        if ingredient not in All_Ingredients:
-          all_recipes.remove(recipe)
+    ##recipe is a dictionary
+    recipe_copy = []
+    #recipe_copy.extend(all_recipes)
+    for i in range(len(all_recipes)):
+      good_recipe = True
+      ingredients = all_recipes[i]['ingredients'].split(", ")
+      for element in ingredients:
+        element = element.encode('utf-8')
+        if element not in all_ingredient_names:
+          print element
+          good_recipe = False
+          #recipe_copy.remove(all_recipes[i])
+          #break  #after recipe is removed, stop searching ingredient list
+      if good_recipe:
+        recipe_copy.append(all_recipes[i])
+    print recipe_copy
+    return recipe_copy
 
-    return all_recipes
   
   def get_url(self, ingredient, pagenumber):
     """Format url for api call"""
-    url = "http://www.recipepuppy.com/api/?i=%s&p=%s" % (ingredient.name, pagenumber)
+    for letter in ingredient.name:
+      formatted = ingredient.name.replace(' ',"%20")
+    url = "http://www.recipepuppy.com/api/?i=%s&p=%s" % (formatted, pagenumber)
     return url
 
   def get_json(self, url):
@@ -71,10 +87,14 @@ class User(object):
     page_number = 1
     while not page_empty:
       url = self.get_url(ingredient, page_number)
-      contents = self.get_json(url)
-      if contents == empty_page:
-        page_empty = True
-      recipe_list += contents
+      print url
+      try:
+        contents = self.get_json(url)
+        if contents == empty_page:
+          page_empty = True
+        recipe_list += contents
+      except:
+        print "Error reaching ", url
       page_number += 1
     return recipe_list
 
@@ -88,8 +108,7 @@ class Ingredient(object):
 
   
 class Shelf(object):
-  """ Holds a list of ingredients    
-  """
+  """ Holds a list of ingredients"""
   def __init__(self):
     self.ingredients = []  #list of ingredient objects
   
@@ -103,12 +122,12 @@ class Shelf(object):
     ingredients = []
     while not done:
       print "Add an ingredient. If done, type 'Done'. "
-      name = raw_input()
-      if name == 'Done':
+      name = raw_input().lower()
+      if name == 'done':
         done = True
+        return ingredients 
       new_ingredient = Ingredient(name)
       ingredients.append(new_ingredient)
-    return ingredients  
 
 
 class Pantry(Shelf):
