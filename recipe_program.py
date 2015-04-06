@@ -47,25 +47,27 @@ class User(object):
     #recipe_copy.extend(all_recipes)
     for i in range(len(all_recipes)):
       good_recipe = True
-      ingredients = all_recipes[i]['ingredients'].split(", ")
+      ingredients = all_recipes[i][u'ingredients']
+      print ingredients
       for element in ingredients:
         element = element.encode('utf-8')
         if element not in all_ingredient_names:
           print element
           good_recipe = False
           #recipe_copy.remove(all_recipes[i])
-          #break  #after recipe is removed, stop searching ingredient list
+          break  #after recipe is removed, stop searching ingredient list
       if good_recipe:
-        recipe_copy.append(all_recipes[i])
+        if all_recipes[i] not in recipe_copy:
+          recipe_copy.append(all_recipes[i])
     print recipe_copy
     return recipe_copy
 
   
-  def get_url(self, ingredient, pagenumber):
+  def get_url(self, ingredient):
     """Format url for api call"""
     for letter in ingredient.name:
       formatted = ingredient.name.replace(' ',"%20")
-    url = "http://www.recipepuppy.com/api/?i=%s&p=%s" % (formatted, pagenumber)
+    url = "http://api.yummly.com/v1/api/recipes?_app_id=c95876fa&_app_key=ef0c2016540a55876cffbabe427d6d83&allowedIngredient[]=%s" % (formatted)
     return url
 
   def get_json(self, url):
@@ -76,26 +78,20 @@ class User(object):
     f = urllib2.urlopen(url)  #opens url
     response_text = f.read()  #reads through url
     response_data = json.loads(response_text)  #converts data to json
-    results = response_data["results"]
-    return results
+    return response_data
   
   def get_all_recipes(self, ingredient):
     """ Gets a list of all recipes for a given ingredient """
-    empty_page = []
+    empty_page = 0
     recipe_list = []
-    page_empty= False
-    page_number = 1
-    while not page_empty:
-      url = self.get_url(ingredient, page_number)
-      print url
-      try:
-        contents = self.get_json(url)
-        if contents == empty_page:
-          page_empty = True
-        recipe_list += contents
-      except:
-        print "Error reaching ", url
-      page_number += 1
+    url = self.get_url(ingredient)
+    contents_all = self.get_json(url)
+    if contents_all['totalMatchCount'] == empty_page:
+      print "There is nothing here for ", ingredient
+    else:
+      contents = contents_all['matches']
+      print contents
+      recipe_list += contents
     return recipe_list
 
   
