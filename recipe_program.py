@@ -25,16 +25,7 @@ class User(object):
 
   def get_useful_recipes(self):
     """Generate recipes based on fridge and pantry in RecipePuppy"""
-   #  # Make search term
-   #  # get all recipes
-   #  # Format url
-   #  url = self.get_url()
 
-   # # Call list
-   #  recipe_list = self.get_recipe_list(url)
-   #  # Get rid of bad recipes
-   #  good_recipes = self.filter_recipes(recipe_list)
-   #  pass
     all_recipes = []
     all_ingredient_names = []
     All_Ingredients = self.fridge.ingredients + self.pantry.ingredients
@@ -44,18 +35,18 @@ class User(object):
 
     ##recipe is a dictionary
     recipe_copy = []
-    #recipe_copy.extend(all_recipes)
     for i in range(len(all_recipes)):
       good_recipe = True
       ingredients = all_recipes[i][u'ingredients']
-      print ingredients
       for element in ingredients:
         element = element.encode('utf-8')
-        if element not in all_ingredient_names:
-          print element
+        good_ingredient = False
+        for my_ingredient in all_ingredient_names:
+          if my_ingredient in element:
+            good_ingredient = True
+        if not good_ingredient:
           good_recipe = False
-          #recipe_copy.remove(all_recipes[i])
-          break  #after recipe is removed, stop searching ingredient list
+          break
       if good_recipe:
         if all_recipes[i] not in recipe_copy:
           recipe_copy.append(all_recipes[i])
@@ -87,10 +78,9 @@ class User(object):
     url = self.get_url(ingredient)
     contents_all = self.get_json(url)
     if contents_all['totalMatchCount'] == empty_page:
-      print "There is nothing here for ", ingredient
+      print "There is nothing here for ", ingredient.name
     else:
       contents = contents_all['matches']
-      print contents
       recipe_list += contents
     return recipe_list
 
