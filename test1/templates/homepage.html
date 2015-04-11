@@ -16,18 +16,36 @@
       });
     });
   </script>
+  <script type=text/javascript>
+    $(function() {
+      $('a#get_recipes').bind('click', function() {
+        $.getJSON('/_return_recipes', {
+          ingredients: $('input[name="ingredients"]').val(),
+        }, function(data) {
+          $("#result2").text(data.result);
+        });
+        return false;
+      });
+    });
+  </script>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <h3 class="text-muted">How To Manage JSON Requests</h3>
+        <h3 class="text-muted">Find a Recipe!</h3>
       </div>
       <hr/>
       <div>
       <p>
     <input type="text" size="50" name="a"> 
     <span id="result"> </span>
-    <p><a href="javascript:void();" id="calculate">Find a recipe!</a>
+    <p><a href="javascript:void();" id="calculate">Print ingredients!</a><br>    
+
+    <input type="text" size="50" name="ingredients"> 
+    <span id="result2"> </span>
+    <p><a href="javascript:void();" id="get_recipes">Print ingredients!</a><br>
+
+
       </form>
       </div>
     </div>
