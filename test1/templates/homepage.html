@@ -7,7 +7,7 @@
   <script type=text/javascript>
     $(function() {
       $('a#calculate').bind('click', function() {
-        $.getJSON('/food_page', {
+        $.getJSON('/_food_page', {
           a: $('input[name="a"]').val(),
         }, function(data) {
           $("#result").text(data.result);
