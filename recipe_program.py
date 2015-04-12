@@ -7,12 +7,14 @@ import urllib2  # urlopen function (better than urllib version)
 import json
 from pickle import dump, load
 from os.path import exists
+import pymongo
+from pymongo import MongoClient
 
 class User(object):
   """Class that defines a user with a specific pantry and fridge"""
-  def __init__(self):
-    self.name = self.get_name()
-    self.pantry = Pantry(self.name)
+  def __init__(self, name, db):
+    self.name = name
+    self.pantry = None #Pantry(self.name, db)
     self.fridge = Fridge()
     
   def __str__(self):
@@ -82,15 +84,17 @@ class User(object):
     else:
       contents = contents_all['matches']
       recipe_list += contents
-    return recipe_list
-
-  
+    return recipe_list  
   
 class Ingredient(object):
   """User input ingredients that they have"""
   def __init__(self, ingredient):
     self.name = ingredient
   ##will eventually put in quantity, allergns, etc.
+
+  def __str__(self):
+    """ Returns a string of the name """
+    return self.name
 
   
 class Shelf(object):
@@ -100,37 +104,53 @@ class Shelf(object):
   
   def __str__(self):
     """ Returns a list of the ingredients """
-    return self.ingredients
+    return str(self.ingredients)
     
-  def make_shelf(self):
+  def make_shelf(self, string):
     """ Adds an Ingredient object to the ingredient list """
-    done = False
-    ingredients = []
-    while not done:
-      print "Add an ingredient. If done, type 'Done'. "
-      name = raw_input().lower()
-      if name == 'done':
-        done = True
-        return ingredients 
-      new_ingredient = Ingredient(name)
-      ingredients.append(new_ingredient)
+##    done = False
+##    ingredients = []
+##    while not done:
+##      print "Add an ingredient. If done, type 'Done'. "
+##      name = raw_input().lower()
+##      if name == 'done':
+##        done = True
+##        return ingredients 
+##      new_ingredient = Ingredient(name)
+##      ingredients.append(new_ingredient)
+    ingredients = string.lower().split()
+    return ingredients
 
 
 class Pantry(Shelf):
-  def __init__(self, username):
+  def __init__(self, username, db):
     self.username = username
+    self.db = db
     self.ingredients = self.make_pantry()
+    self.save_pantry()
     
   def make_pantry(self):
-    # If exits, load
-    filename = self.username + ".txt"
-    if exists(filename):
-      self.ingredients.append(load(open(filename, "r+")))
-      self.edit_pantry()      
-    else:
-      print "Add ingredients to your pantry"
+##    # If exits, load
+##    filename = self.username + ".txt"
+##    if exists(filename):
+##      self.ingredients.append(load(open(filename, "r+")))
+##      self.edit_pantry()      
+##    else:
+##      print "Add ingredients to your pantry"
+##      return self.make_shelf()
+##    # otherwise make new
+    users = self.db.posts
+    user = users.find_one({"user": self.username})
+    # If the pantry is not stored, build it
+    if user == None:
       return self.make_shelf()
-    # otherwise make new
+    # Otherwise, load it and ask to update
+    else:
+      # Add the existing pantry
+      #self.ingredients.append(user["ingredients"])
+      # Edit the existing pantry
+      return self.edit_pantry(user["ingredients"])
+      
   
   def edit_pantry(self):
     print "Current Pantry: "
@@ -143,30 +163,48 @@ class Pantry(Shelf):
       response = raw_input().lower()
       if response == 'yes' or response == 'no':
         valid_response = True
+      else:
+        print "Not a valid response. Please type Yes or No."
     
     if response == "yes":
-      self.make_shelf()
+      print "re-enter all ingredients"
+      return self.make_shelf()
     elif response == "no":
-      return
-    else:
-      print "Not a valid response. Please type Yes or No."
-
+      return self.ingredients
+    
+  def save_pantry(self):
+    """ Save the Pantry to a database """
+    ingredient_info = []
+    for ingredient in self.ingredients:
+      ingredient_info.append(ingredient.name)
+    user = {"user": self.username, "ingredients": str(ingredient_info)}
+    users = self.db.posts
+    users.insert_one(user)
+    
     
 class Fridge(Shelf):
   def __init__(self):
-    self.ingredients = self.make_fridge()
+    self.ingredients = None #self.make_fridge()
     
-  def make_fridge(self):
-    print "Add ingredients to your fridge"
-    return self.make_shelf()
+  def make_fridge(self, ingredients_string):
+    #print "Add ingredients to your fridge"
+    self.ingredients = self.make_shelf(ingredients_string)
   
  
-  
-  #################################### MAIN ############
+
+#################################### MAIN ############
 
 if __name__ == '__main__':
-  current_user = User()
-  current_user.get_useful_recipes()
+  # Initialize MongoDB
+  client = MongoClient()
+  db = client.users
+  
+  # Do user program stuff
+  current_user = User('bob', db)
+  current_user.fridge.make_fridge("Oatmeal, milk")
+  print current_user.fridge
+  current_user.pantry.make_pantry()
+  #current_user.get_useful_recipes()
   
   
   
