@@ -9,15 +9,13 @@ from pickle import dump, load
 from os.path import exists
 import pymongo
 from pymongo import MongoClient
-import ast # This allows for convertion between str to list
 
 class User(object):
   """Class that defines a user with a specific pantry and fridge"""
   def __init__(self, name, db):
     self.name = name
-    self.pantry = Pantry(name, db)
+    self.pantry = None #Pantry(self.name, db)
     self.fridge = Fridge()
-    self.db = db
     
   def __str__(self):
     """Returns the pantry and fridge of user"""
@@ -26,22 +24,6 @@ class User(object):
   def get_name(self):
     print "What is your name?"
     return raw_input()
-
-  def get_pantry(self):
-    """ Return the pantry if it exists, or an empty string """
-    users = self.db.posts
-    user = users.find_one({"user": self.name})
-    if user == None:
-      # If the pantry is not stored, build it
-      return ""
-    else:
-      # Otherwise, return the pantry
-      ingredients = ast.literal_eval(user["ingredients"])
-      ingredient_list = []
-      for i in ingredients:
-          ingredient_list.append(Ingredient(i))
-      self.pantry.ingredients = ingredient_list
-      return self.pantry
 
   def get_useful_recipes(self):
     """Generate recipes based on fridge and pantry in RecipePuppy"""
@@ -122,10 +104,7 @@ class Shelf(object):
   
   def __str__(self):
     """ Returns a list of the ingredients """
-    ingredients = []
-    for i in self.ingredients:
-        ingredients.append(str(i))
-    return str(ingredients)
+    return str(self.ingredients)
     
   def make_shelf(self, string):
     """ Adds an Ingredient object to the ingredient list """
@@ -151,11 +130,10 @@ class Pantry(Shelf):
   def __init__(self, username, db):
     self.username = username
     self.db = db
-    self.ingredients = []
-    #self.save_pantry()
+    self.ingredients = self.make_pantry()
+    self.save_pantry()
     
-  def make_pantry(self, ingredients_string):
-    self.ingredients = self.make_shelf(ingredients_string)
+  def make_pantry(self):
 ##    # If exits, load
 ##    filename = self.username + ".txt"
 ##    if exists(filename):
@@ -165,39 +143,38 @@ class Pantry(Shelf):
 ##      print "Add ingredients to your pantry"
 ##      return self.make_shelf()
 ##    # otherwise make new
-      
-##    users = self.db.posts
-##    user = users.find_one({"user": self.username})
-##    # If the pantry is not stored, build it
-##    if user == None:
-##      return self.make_shelf()
-##    # Otherwise, load it and ask to update
-##    else:
-##      # Add the existing pantry
-##      #self.ingredients.append(user["ingredients"])
-##      # Edit the existing pantry
-##      return self.edit_pantry(user["ingredients"])
+    users = self.db.posts
+    user = users.find_one({"user": self.username})
+    # If the pantry is not stored, build it
+    if user == None:
+      return self.make_shelf()
+    # Otherwise, load it and ask to update
+    else:
+      # Add the existing pantry
+      #self.ingredients.append(user["ingredients"])
+      # Edit the existing pantry
+      return self.edit_pantry(user["ingredients"])
       
   
-##  def make_pantry(self):
-##    print "Current Pantry: "
-##    print self.ingredients
-##    
-##    # Make sure response is valid
-##    valid_response = False
-##    while not valid_response:
-##      print "Do you want to edit your pantry? Yes/No"
-##      response = raw_input().lower()
-##      if response == 'yes' or response == 'no':
-##        valid_response = True
-##      else:
-##        print "Not a valid response. Please type Yes or No."
-##    
-##    if response == "yes":
-##      print "re-enter all ingredients"
-##      return self.make_shelf()
-##    elif response == "no":
-##      return self.ingredients
+  def edit_pantry(self):
+    print "Current Pantry: "
+    print self.ingredients
+    
+    # Make sure response is valid
+    valid_response = False
+    while not valid_response:
+      print "Do you want to edit your pantry? Yes/No"
+      response = raw_input().lower()
+      if response == 'yes' or response == 'no':
+        valid_response = True
+      else:
+        print "Not a valid response. Please type Yes or No."
+    
+    if response == "yes":
+      print "re-enter all ingredients"
+      return self.make_shelf()
+    elif response == "no":
+      return self.ingredients
     
   def save_pantry(self):
     """ Save the Pantry to a database """
@@ -206,7 +183,6 @@ class Pantry(Shelf):
       ingredient_info.append(ingredient.name)
     user = {"user": self.username, "ingredients": str(ingredient_info)}
     users = self.db.posts
-    users.remove({"user": self.username})
     users.insert_one(user)
     
     
@@ -229,17 +205,10 @@ if __name__ == '__main__':
   
   # Do user program stuff
   current_user = User('bob', db)
-  print current_user.get_pantry()
-  current_user.pantry.make_pantry("flour, egg, milk, sugar, salt, butter")
-  current_user.pantry.save_pantry()
-  print current_user.pantry
-
-  bob = User('bob', db)
-  print bob.get_pantry()
-  #current_user.fridge.make_fridge("flour, egg, milk, sugar, salt, butter")
-  #print current_user.fridge
+  current_user.fridge.make_fridge("flour, egg, milk, sugar, salt, water, butter")
+  print current_user.fridge
   #current_user.pantry.make_pantry()
-  #current_user.get_useful_recipes()
+  current_user.get_useful_recipes()
   
   
   
