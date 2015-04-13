@@ -3,32 +3,50 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <meta name="viewport" content="width=640">
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
 
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
     <title>Rapid Recipes by aconsilvio</title>
   </head>
 
   <body>
-    <header>
-      <div class="inner">
-        <h1>Rapid Recipes</h1>
-        <h2>Eat what you want.</h2>
-        <a href="https://github.com/aconsilvio/recipe_program" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+    <a id="forkme_banner" href="https://github.com/aconsilvio/recipe_program">View on GitHub</a>
+    <div class="shell">
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h3>
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Rapid Recipes</h1>
+            <h2>Eat what you want.</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/aconsilvio/recipe_program/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/aconsilvio/recipe_program/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h3>
 <a id="stay-hungry" class="anchor" href="#stay-hungry" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stay hungry.</h3>
 
 <p>We are developing a program that will find you a recipe based on the foods in your pantry, the amount of time you want to spend cooking, and your favorite ethnic cuisines.  We hope you will enjoy.</p>
@@ -44,35 +62,27 @@
 <p>Find our project proposal <a href="/recipe_program/images/SoftdesProjectProposal.pdf">here</a>.</p>
 
 <h3>
-<a id="design-review" class="anchor" href="#design-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Design Review</h3>
+<a id="design-review-1" class="anchor" href="#design-review-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Design Review 1</h3>
 
 <p>Find our preparation document <a href="/recipe_program/images/PreparationandFraming.pdf">here</a> and our reflection document <a href="/recipe_program/images/DesignReviewReflection.pdf">here</a>.</p>
 
-<h3>
-<a id="code-review" class="anchor" href="#code-review" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code Review</h3>
-
-<p>Find our preparation document <a href="/recipe_program/images/SoftDesCodeReview.pdf">here</a>.</p>
-
 <hr>
-        </section>
+      </section>
 
-        <aside id="sidebar">
-          <a href="https://github.com/aconsilvio/recipe_program/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/aconsilvio/recipe_program/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/aconsilvio">aconsilvio</a> can be found on <a href="https://github.com/aconsilvio/recipe_program">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
 
-          <p class="repo-owner"><a href="https://github.com/aconsilvio/recipe_program"></a> is maintained by <a href="https://github.com/aconsilvio">aconsilvio</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
     </div>
 
-  
+    
   </body>
 </html>
