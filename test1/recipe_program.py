@@ -50,6 +50,7 @@ class User(object):
     all_ingredient_names = []
     All_Ingredients = self.fridge.ingredients# + self.pantry.ingredients
     for ingredient in All_Ingredients:
+      print ingredient
       all_recipes += (self.get_all_recipes(ingredient))
       all_ingredient_names.append(ingredient.name)
 
@@ -236,10 +237,11 @@ if __name__ == '__main__':
 
   bob = User('bob', db)
   print bob.get_pantry()
-  #current_user.fridge.make_fridge("flour, egg, milk, sugar, salt, butter")
-  #print current_user.fridge
+  current_user.fridge.make_fridge("flour, egg, milk, sugar, salt, butter")
+  current_user.fridge.make_fridge("pineapple, flour, butter, milk, salt, eggs, sugar, vanilla, water, chicken, oil, baking soda, baking powder, chocolate, corn startch, corn, chips, brown sugar, coffee, carrots, potatoes, steak, fish, salmon")
+  print current_user.fridge
   #current_user.pantry.make_pantry()
-  #current_user.get_useful_recipes()
+  print current_user.get_useful_recipes()
   
   
   
