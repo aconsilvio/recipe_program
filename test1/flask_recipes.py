@@ -28,9 +28,11 @@ def food_page():
   current_user.fridge.make_fridge(fridge_ingredients)
   recipe_dictionaries = current_user.get_useful_recipes()
   recipe_names = []
+  recipe_ids = []
   for i in range(len(recipe_dictionaries)):
     recipe_names.append(recipe_dictionaries[i]['recipeName'].encode('ascii','ignore'))
-  return jsonify(result=', '.join(recipe_names))
+    recipe_ids.append(recipe_dictionaries[i]['recipeName'].encode('ascii','ignore'))
+  return jsonify(result=(recipe_names, recipe_links))
 
 
   # get_useful_recipes(ingredients_list)

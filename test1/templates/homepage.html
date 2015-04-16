@@ -24,12 +24,13 @@
         $.getJSON('/_food_page', {
           b: $('input[name="b"]').val(),
         }, function(data) {
-          $("#result2").text(data.result);
+          urls: $("#result2").text(data.result);
         });
         return false;
       });
     });
   </script>
+
   </head>
   <body>
     <div class="container">
@@ -49,9 +50,13 @@
     <input type="text" size="50" name="b"> 
     <a href="javascript:void();" id="calculate2">Find recipes!</a><br>    
     <span id="result2"> </span>
-
-
-
+    <script>
+    {% for combo in urls %}
+      <a href = "http://www.yummly.com/recipes/{{combo}}"> Link </a>
+      <br>
+      document.write('<p> hello </p>')
+    {% endfor %}
+    </script>
       </form>
       </div>
     </div>
