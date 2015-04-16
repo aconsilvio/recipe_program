@@ -77,6 +77,17 @@ class User(object):
           recipe_copy.append(all_recipes[i])
     return recipe_copy
 
+  def get_time(self,time):
+    return time
+
+  def get_timed_recipes(self, time):
+    recipes = self.get_useful_recipes()
+    print recipes
+    timed_recipes = []
+    for i in range(len(recipes)):
+      if recipes[i]['totalTimeInSeconds'] <= time*60:
+        timed_recipes.append(recipes[i])
+    return timed_recipes
   
   def get_url(self, ingredient):
     """ Format url for api call """

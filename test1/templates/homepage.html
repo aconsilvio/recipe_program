@@ -18,6 +18,19 @@
     });
   </script>
 
+  <script type=text/javascript> // for our new box
+    $(function() {
+      $('a#calculatetime').bind('click', function() {
+        $.getJSON('/_timed_recipes', {
+          times: $('input[name="times"]').val(),
+        }, function(data) {
+          $("#result_time").text(data.cooktime);
+        });
+        return false;
+      });
+    });
+  </script>
+
   <script type=text/javascript>
     $(function() {
       $('a#calculate2').bind('click', function() {
@@ -26,7 +39,7 @@
         }, function(data) {
           var htmlResults = "";
           for (var i = 0; i < data.names.length; i ++) {
-            htmlResults += "<a href='http://www.yummly.com/recipe/" + data.ids[i] + "'>" + data.names[i] + "</a><br>";
+            htmlResults += "<img src ='"+data.pics[i]+"'><br><a href='http://www.yummly.com/recipe/" + data.ids[i] + "'>" + data.names[i] + "</a>  Cooktime: "+ data.times[i]+" minutes<br><br>";
           }
           console.log("We are here");
           $("#result2").html(htmlResults);
@@ -50,6 +63,10 @@
     <input type="text" size="25" name="names"> 
     <a href="javascript:void();" id="calculate">Log in.</a><br>    
     Logged in as: <span id="result"> </span>
+    <br><br>
+    <input type="text" size="25" name="times"> 
+    <a href="javascript:void();" id="calculatetime">Max Total Cooktime (minutes)</a><br>    
+    <span id="result_time"> </span>
     <br><br>
     <p>Type of list of available ingredients seperated by commas.<br>
     <input type="text" size="50" name="b"> 
