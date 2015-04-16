@@ -31,7 +31,7 @@ def food_page():
   recipe_ids = []
   for i in range(len(recipe_dictionaries)):
     recipe_names.append(recipe_dictionaries[i]['recipeName'].encode('ascii','ignore'))
-    recipe_ids.append(recipe_dictionaries[i]['recipeName'].encode('ascii','ignore'))
+    recipe_ids.append(recipe_dictionaries[i]['id'].encode('ascii','ignore'))
   return jsonify(result=(recipe_names, recipe_ids))
 
 
