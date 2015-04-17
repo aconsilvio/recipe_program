@@ -2,6 +2,8 @@ class Test(object):
     def __init__(self):
         self.a = 1
 
+# In terminal, run $sudo service mongod start
+
 import pymongo
 import datetime
 from pymongo import MongoClient

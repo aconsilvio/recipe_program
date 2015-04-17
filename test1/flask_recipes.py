@@ -61,7 +61,7 @@ if __name__ == '__main__':
     # print username
     # current_user = User(username, db)
     # print current_user.name
-    flask_recipes.run(host="0.0.0.0",port=int("8080"),debug=True)
+    flask_recipes.run(host="0.0.0.0",port=int("8081"),debug=True)
   # flask_recipes.run(
   #   host = "0.0.0.0",
   #   port = int("8080"),

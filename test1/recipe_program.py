@@ -7,8 +7,8 @@ import urllib2  # urlopen function (better than urllib version)
 import json
 from pickle import dump, load
 from os.path import exists
-import pymongo
-from pymongo import MongoClient
+#import pymongo
+#from pymongo import MongoClient
 import ast # This allows for convertion between str to list
 
 class User(object):
