@@ -9,6 +9,12 @@ from recipe_program import *
 
 flask_recipes = Flask(__name__)
 
+# GLobal vars
+users = []
+foods = []
+recipes= []
+time_global = []
+
 @flask_recipes.route('/')
 def homepage():
   return render_template('homepage.html')
@@ -19,6 +25,7 @@ def make_user():
   current_user = User(names, 0)
   users.append(current_user)
   return jsonify(result=current_user.name)
+  #return jsonify(result=names)
 
 @flask_recipes.route('/_timed_recipes') # make name
 def timed_recipes():
@@ -52,16 +59,16 @@ def food_page():
 
 
 if __name__ == '__main__':
-    users = []
-    foods = []
-    recipes= []
-    time_global = []
+    # users = []
+    # foods = []
+    # recipes= []
+    # time_global = []
     # username = make_user()
     # db = 0
     # print username
     # current_user = User(username, db)
     # print current_user.name
-    flask_recipes.run(host="0.0.0.0",port=int("8080"),debug=True)
+    flask_recipes.run(host="0.0.0.0",port=int("8081"),debug=True)
   # flask_recipes.run(
   #   host = "0.0.0.0",
   #   port = int("8080"),
