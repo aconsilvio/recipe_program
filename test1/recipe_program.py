@@ -77,12 +77,23 @@ class User(object):
           recipe_copy.append(all_recipes[i])
     return recipe_copy
 
+  def get_time(self,time):
+    return time
+
+  def get_timed_recipes(self, time):
+    recipes = self.get_useful_recipes()
+    print recipes
+    timed_recipes = []
+    for i in range(len(recipes)):
+      if recipes[i]['totalTimeInSeconds'] <= time*60:
+        timed_recipes.append(recipes[i])
+    return timed_recipes
   
   def get_url(self, ingredient):
     """ Format url for api call """
     for letter in ingredient.name:
       formatted = ingredient.name.replace(' ',"%20")
-    url = "http://api.yummly.com/v1/api/recipes?_app_id=c95876fa&_app_key=ef0c2016540a55876cffbabe427d6d83&allowedIngredient[]=%s" % (formatted)
+    url = "http://api.yummly.com/v1/api/recipes?_app_id=c95876fa&requirePictures=true&_app_key=ef0c2016540a55876cffbabe427d6d83&allowedIngredient[]=%s" % (formatted)
     return url
 
   def get_json(self, url):
