@@ -32,16 +32,14 @@ class User(object):
     # Look for the user in the database
     #return "this is a test pantry"
     users = self.db.users
-    print users
     user = users.find_one({"user": self.name})
-    print user
     
-    if user["ingredients"] == None:
+    if user["pantry"] == None:
       # If the pantry is not stored, return an empty string
       return "No stored pantry"
     else:
       # Otherwise, return the pantry
-      ingredients = ast.literal_eval(user["ingredients"]) # Convert str to list
+      ingredients = ast.literal_eval(user["pantry"]) # Convert str to list
       ingredient_list = [] # Empty list to store ingredient objects
       for i in ingredients:
         # Add ingredients as ingredient objects to the pantry
@@ -87,9 +85,7 @@ class User(object):
 
   def get_timed_recipes(self, time):
     recipes = self.get_useful_recipes()
-    print recipes
     timed_recipes = []
-    print type(time)
     for i in range(len(recipes)):
       if recipes[i]['totalTimeInSeconds'] <= int(time)*60:
         timed_recipes.append(recipes[i])
@@ -114,16 +110,26 @@ class User(object):
   
   def get_all_recipes(self, ingredient):
     """ Gets a list of all recipes for a given ingredient """
-    empty_page = 0
-    recipe_list = []
-    url = self.get_url(ingredient)
-    contents_all = self.get_json(url)
-    if contents_all['totalMatchCount'] == empty_page:
-      print "There is nothing here for ", ingredient.name
+    recipes = self.db.recipes
+    recipe = recipes.find_one({"ingredient": str(ingredient)})
+    # Check to see if the list has been memoized
+    if recipe != None:
+      return recipe["recipe_list"]
+    # Otherwise call url
     else:
-      contents = contents_all['matches']
-      recipe_list += contents
-    return recipe_list  
+      empty_page = 0
+      recipe_list = []
+      url = self.get_url(ingredient)
+      contents_all = self.get_json(url)
+      if contents_all['totalMatchCount'] == empty_page:
+        print "There is nothing here for ", ingredient.name
+      else:
+        contents = contents_all['matches']
+        recipe_list += contents
+
+      # add list to db and return
+      recipes.insert({"ingredient": str(ingredient), 'recipe_list': recipe_list})
+      return recipe_list
   
 class Ingredient(object):
   """User input ingredients that they have"""
@@ -177,7 +183,7 @@ class Pantry(Shelf):
     for ingredient in self.ingredients:
       ingredient_info.append(ingredient.name)
     # Format pantry as json string, so that it can be stored in a database
-    user = {"user": self.username, "ingredients": str(ingredient_info)}
+    user = {"user": self.username, "pantry": str(ingredient_info)}
     users = self.db.users
     # Remove the previously saved pantry, if it exists
     users.remove({"user": self.username})

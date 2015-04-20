@@ -20,6 +20,8 @@ db_name = 'recipe_program_db'
 username = 'anisha'
 password = 'recipe' 
 
+#url = "mongodb://"+username+":"+password+"@host:"+port+"/"+db_name 
+
 from pymongo import MongoClient
 
 client = MongoClient(server, port)
@@ -36,15 +38,18 @@ db.authenticate(username, password)
 posts = db.posts
 print '\nNumber of posts', posts.find().count() 
 
-#db.friends.insert({'annabel': 'cheese'})
-print db.friends
-print db.friends.find_one()
-print
+#db.friends.insert({'name': 'annabel', 'food': 'cheese'})
+#db.friends.insert({'name': 'anisha', 'food': 'chocolate'})
+#print db.friends
+string = db.friends.find_one({'name': 'anisha'})
+print string
+print type(string)
 #db.enemies.insert({'andrew': 'music'})
-print db.enemies
-print db.enemies.find_one()
-print
-print db.posts
+#print db.enemies
+#db.enemies.remove()
+#print db.enemies.find_one()
+#print
+#print db.posts
 
 
 
