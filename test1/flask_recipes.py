@@ -25,7 +25,6 @@ import pymongo
 from pymongo import MongoClient
 
 url = "mongodb://"+username+":"+password+"@"+server+":"+str(port)+"/"+db_name 
-print url
 
 client = MongoClient(url)
 db = client[db_name] # Get the database
@@ -42,8 +41,7 @@ def make_user():
   names = request.args.get('names', 1, type=str)
   global db
   current_user = User(names, db)
-  db.users.insert({"user": current_user.name, "ingredients": None})
-  print db.users.find_one()
+  db.users.insert({"user": current_user.name, "pantry": None})
   users.append(current_user)
   return jsonify(name=current_user.name, pantry = current_user.get_pantry())
   #return jsonify(result=names)
@@ -62,7 +60,6 @@ def timed_recipes():
   time = request.args.get('time', 0, type=int)
   global time_global
   time_global = time
-  print type(time)
   return jsonify(cooktime=time_global)
 
 
@@ -96,9 +93,11 @@ if __name__ == '__main__':
     # print username
     # current_user = User(username, db)
     # print current_user.name
-    print db.users.find_one()
-    db.users.remove()
-    print db.users.find_one()
+    #print db.users.find_one()
+    #db.users.remove()
+    #print db.users.find_one()
+    #db.recipes.remove()
+    #print db.recipes.find_one()
     flask_recipes.run(host="0.0.0.0",port=int("8081"),debug=True)
 
   # flask_recipes.run(
