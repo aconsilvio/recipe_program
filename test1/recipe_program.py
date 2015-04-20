@@ -8,7 +8,7 @@ import json
 from pickle import dump, load
 from os.path import exists
 #import pymongo
-#from pymongo import MongoClient
+from pymongo import MongoClient
 import ast # This allows for convertion between str to list
 
 
@@ -30,13 +30,15 @@ class User(object):
   def get_pantry(self):
     """ Return the pantry if it exists, or an empty string """
     # Look for the user in the database
-    return "this is a test pantry"
-    users = self.db.posts
+    #return "this is a test pantry"
+    users = self.db.users
+    print users
     user = users.find_one({"user": self.name})
+    print user
     
-    if user == None:
+    if user["ingredients"] == None:
       # If the pantry is not stored, return an empty string
-      return ""
+      return "No stored pantry"
     else:
       # Otherwise, return the pantry
       ingredients = ast.literal_eval(user["ingredients"]) # Convert str to list
@@ -46,7 +48,7 @@ class User(object):
         ingredient_list.append(Ingredient(i))
       # Update the pantry attribute with the existing (stored) pantry
       self.pantry.ingredients = ingredient_list
-      return self.pantry
+      return str(self.pantry)
 
   def get_useful_recipes(self):
     """ Generate recipes based on fridge and pantry with yummly API
@@ -176,7 +178,7 @@ class Pantry(Shelf):
       ingredient_info.append(ingredient.name)
     # Format pantry as json string, so that it can be stored in a database
     user = {"user": self.username, "ingredients": str(ingredient_info)}
-    users = self.db.posts
+    users = self.db.users
     # Remove the previously saved pantry, if it exists
     users.remove({"user": self.username})
     users.insert_one(user)
@@ -205,6 +207,8 @@ if __name__ == '__main__':
   # current_user.pantry.make_pantry("flour, egg, milk, sugar, salt, butter")
   # current_user.pantry.save_pantry()
   # print current_user.name + "'s new pantry:   ",current_user.pantry
+  # print type(current_user.pantry)
+  # print type(str(current_user.pantry))
 
   # Get recipes
 ##  current_user.fridge.make_fridge("pineapple, flour, butter, milk, salt, eggs, sugar, vanilla, water, chicken, oil, baking soda, baking powder, chocolate, corn starch, corn, chips, brown sugar, coffee, carrots, potatoes, steak, fish, salmon")

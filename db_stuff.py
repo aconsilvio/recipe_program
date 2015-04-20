@@ -1,3 +1,17 @@
+# How to run heroku:
+# $ heroku login
+# $ source venv/bin/activate
+# $ foreman start
+# $ pip install -r requirements.txt --allow-all-external
+# $ git add .
+# $ git commit -m "stuff"
+# $ git push heroku master
+# $ heroku open
+
+# kill port process:
+# ps -fA | grep python
+# kill <number>
+
 ########################### MONGOLAB ######################################
 
 server = 'ds061661.mongolab.com'
@@ -29,6 +43,8 @@ print
 #db.enemies.insert({'andrew': 'music'})
 print db.enemies
 print db.enemies.find_one()
+print
+print db.posts
 
 
 

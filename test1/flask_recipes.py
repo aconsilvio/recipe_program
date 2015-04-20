@@ -21,6 +21,7 @@ port = 61661
 db_name = 'recipe_program_db'
 username = 'anisha'
 password = 'recipe' 
+import pymongo
 from pymongo import MongoClient
 
 client = MongoClient(server, port)
@@ -38,7 +39,7 @@ def make_user():
   names = request.args.get('names', 1, type=str)
   global db
   current_user = User(names, db)
-  db.users.insert({current_user.name: 'ingredients'})
+  db.users.insert({"user": current_user.name, "ingredients": None})
   print db.users.find_one()
   users.append(current_user)
   return jsonify(name=current_user.name, pantry = current_user.get_pantry())
@@ -49,7 +50,7 @@ def update_pantry():
   pantry_ingredients = request.args.get('pantry', '', type=str)
   current_user = users[0]
   current_user.pantry.make_pantry(pantry_ingredients)
-  #current_user.pantry.save_pantry()
+  current_user.pantry.save_pantry()
   return jsonify(pantry = pantry_ingredients);
 
 
@@ -67,7 +68,6 @@ def food_page():
   fridge_ingredients = request.args.get('b', 0, type=str)
   current_user = users[0]
   current_user.fridge.make_fridge(fridge_ingredients)
-  print 'HELLO THIS IS TIME GLOBAL ->>>>>>>>',time_global
   recipe_dictionaries = current_user.get_timed_recipes(time_global)
   recipe_names = []
   recipe_ids = []
@@ -82,8 +82,6 @@ def food_page():
   return jsonify(names = recipe_names, ids = recipe_ids, pics = recipe_pics, times = cooktimes);
 
 
-  # get_useful_recipes(ingredients_list)
-
 
 if __name__ == '__main__':
     # users = []
@@ -95,7 +93,11 @@ if __name__ == '__main__':
     # print username
     # current_user = User(username, db)
     # print current_user.name
+    #print db.users.find_one()
+    db.users.remove()
+    print db.users.find_one()
     flask_recipes.run(host="0.0.0.0",port=int("8081"),debug=True)
+
   # flask_recipes.run(
   #   host = "0.0.0.0",
   #   port = int("8080"),

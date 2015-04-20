@@ -6,4 +6,3 @@ argparse==1.2.1
 gunicorn==19.3.0
 itsdangerous==0.24
 wsgiref==0.1.2
-pymongo==3.0
