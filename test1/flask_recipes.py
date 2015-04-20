@@ -9,11 +9,25 @@ from recipe_program import *
 
 flask_recipes = Flask(__name__)
 
-# GLobal vars
+# Global vars
 users = []
 foods = []
 recipes= []
 time_global = []
+
+########################### MONGOLAB ##############
+server = 'ds061661.mongolab.com'
+port = 61661
+db_name = 'recipe_program_db'
+username = 'anisha'
+password = 'recipe' 
+from pymongo import MongoClient
+
+client = MongoClient(server, port)
+db = client[db_name] # Get the database
+db.authenticate(username, password) # Authenticate
+posts = db.posts # Get the things in the db
+
 
 @flask_recipes.route('/')
 def homepage():
@@ -22,7 +36,10 @@ def homepage():
 @flask_recipes.route('/_make_user') # make name
 def make_user():
   names = request.args.get('names', 1, type=str)
-  current_user = User(names, 0)
+  global db
+  current_user = User(names, db)
+  db.users.insert({current_user.name: 'ingredients'})
+  print db.users.find_one()
   users.append(current_user)
   return jsonify(result=current_user.name)
   #return jsonify(result=names)

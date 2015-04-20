@@ -11,6 +11,10 @@ from os.path import exists
 #from pymongo import MongoClient
 import ast # This allows for convertion between str to list
 
+
+
+############################ CLASSES ##############
+
 class User(object):
   """ Class that defines a user with and initalizes the pantry and fridge """
   def __init__(self, name, db):
