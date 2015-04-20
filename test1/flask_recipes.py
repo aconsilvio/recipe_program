@@ -24,7 +24,10 @@ password = 'recipe'
 import pymongo
 from pymongo import MongoClient
 
-client = MongoClient(server, port)
+url = "mongodb://"+username+":"+password+"@"+server+":"+str(port)+"/"+db_name 
+print url
+
+client = MongoClient(url)
 db = client[db_name] # Get the database
 db.authenticate(username, password) # Authenticate
 posts = db.posts # Get the things in the db
@@ -93,7 +96,7 @@ if __name__ == '__main__':
     # print username
     # current_user = User(username, db)
     # print current_user.name
-    #print db.users.find_one()
+    print db.users.find_one()
     db.users.remove()
     print db.users.find_one()
     flask_recipes.run(host="0.0.0.0",port=int("8081"),debug=True)

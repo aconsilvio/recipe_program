@@ -56,7 +56,7 @@ class User(object):
     """
     # Build up a list of all recipes that contain at least one ingredient
     all_recipes = []
-    All_Ingredients = self.fridge.ingredients# + self.pantry.ingredients
+    All_Ingredients = self.fridge.ingredients + self.pantry.ingredients
     for ingredient in All_Ingredients:
       all_recipes += (self.get_all_recipes(ingredient))
 
