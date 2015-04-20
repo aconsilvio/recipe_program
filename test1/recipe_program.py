@@ -30,6 +30,7 @@ class User(object):
   def get_pantry(self):
     """ Return the pantry if it exists, or an empty string """
     # Look for the user in the database
+    return "this is a test pantry"
     users = self.db.posts
     user = users.find_one({"user": self.name})
     
@@ -53,7 +54,7 @@ class User(object):
     """
     # Build up a list of all recipes that contain at least one ingredient
     all_recipes = []
-    All_Ingredients = self.fridge.ingredients + self.pantry.ingredients
+    All_Ingredients = self.fridge.ingredients# + self.pantry.ingredients
     for ingredient in All_Ingredients:
       all_recipes += (self.get_all_recipes(ingredient))
 
@@ -81,15 +82,14 @@ class User(object):
           recipe_copy.append(all_recipes[i])
     return recipe_copy
 
-  def get_time(self,time):
-    return time
 
   def get_timed_recipes(self, time):
     recipes = self.get_useful_recipes()
     print recipes
     timed_recipes = []
+    print type(time)
     for i in range(len(recipes)):
-      if recipes[i]['totalTimeInSeconds'] <= time*60:
+      if recipes[i]['totalTimeInSeconds'] <= int(time)*60:
         timed_recipes.append(recipes[i])
     return timed_recipes
   
@@ -200,11 +200,11 @@ if __name__ == '__main__':
   db = client.users
   
   # Make a new user and pantry
-##  current_user = User('bob', db)
-##  print current_user.name + "'s saved pantry: ", current_user.get_pantry()
-##  current_user.pantry.make_pantry("flour, egg, milk, sugar, salt, butter")
-##  current_user.pantry.save_pantry()
-##  print current_user.name + "'s new pantry:   ",current_user.pantry
+  # current_user = User('bob', db)
+  # print current_user.name + "'s saved pantry: ", current_user.get_pantry()
+  # current_user.pantry.make_pantry("flour, egg, milk, sugar, salt, butter")
+  # current_user.pantry.save_pantry()
+  # print current_user.name + "'s new pantry:   ",current_user.pantry
 
   # Get recipes
 ##  current_user.fridge.make_fridge("pineapple, flour, butter, milk, salt, eggs, sugar, vanilla, water, chicken, oil, baking soda, baking powder, chocolate, corn starch, corn, chips, brown sugar, coffee, carrots, potatoes, steak, fish, salmon")

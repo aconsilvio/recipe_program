@@ -11,7 +11,21 @@
         $.getJSON('/_make_user', {
           names: $('input[name="names"]').val(),
         }, function(data) {
-          $("#result").text(data.result);
+          var pantryprint = [data.name, data.pantry]
+          $("#result").text(pantryprint);
+        });
+        return false;
+      });
+    });
+  </script>
+
+  <script type=text/javascript> // for our new box
+    $(function() {
+      $('a#updatepantry').bind('click', function() {
+        $.getJSON('/_update_pantry', {
+          pantry: $('input[name="pantry"]').val(),
+        }, function(data) {
+          $("#result_pantry").text(data.pantry);
         });
         return false;
       });
@@ -22,7 +36,7 @@
     $(function() {
       $('a#calculatetime').bind('click', function() {
         $.getJSON('/_timed_recipes', {
-          times: $('input[name="times"]').val(),
+          time: $('input[name="time"]').val(),
         }, function(data) {
           $("#result_time").text(data.cooktime);
         });
@@ -63,8 +77,13 @@
     <input type="text" size="25" name="names"> 
     <a href="javascript:void();" id="calculate">Log in.</a><br>    
     Logged in as: <span id="result"> </span>
+        <br><br>
+    <p>If you need to update your pantry (see above), type of list of pantry ingredients seperated by commas.<br>
+    <input type="text" size="50" name="pantry"> 
+    <a href="javascript:void();" id="updatepantry">Update Pantry</a><br>    
+    <span id="result_pantry"> </span>
     <br><br>
-    <input type="text" size="25" name="times"> 
+    <input type="text" size="25" name="time"> 
     <a href="javascript:void();" id="calculatetime">Max Total Cooktime (minutes)</a><br>    
     <span id="result_time"> </span>
     <br><br>

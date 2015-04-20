@@ -13,7 +13,7 @@ flask_recipes = Flask(__name__)
 users = []
 foods = []
 recipes= []
-time_global = []
+time_global = int
 
 ########################### MONGOLAB ##############
 server = 'ds061661.mongolab.com'
@@ -41,16 +41,25 @@ def make_user():
   db.users.insert({current_user.name: 'ingredients'})
   print db.users.find_one()
   users.append(current_user)
-  return jsonify(result=current_user.name)
+  return jsonify(name=current_user.name, pantry = current_user.get_pantry())
   #return jsonify(result=names)
+
+@flask_recipes.route('/_update_pantry') # add ingredients
+def update_pantry():
+  pantry_ingredients = request.args.get('pantry', '', type=str)
+  current_user = users[0]
+  current_user.pantry.make_pantry(pantry_ingredients)
+  #current_user.pantry.save_pantry()
+  return jsonify(pantry = pantry_ingredients);
+
 
 @flask_recipes.route('/_timed_recipes') # make name
 def timed_recipes():
-  time = request.args.get('time', 1, type=int)
+  time = request.args.get('time', 0, type=int)
+  global time_global
   time_global = time
-  current_user = users[0]
-  time_var = current_user.get_time(time)
-  return jsonify(cooktime=time_var)
+  print type(time)
+  return jsonify(cooktime=time_global)
 
 
 @flask_recipes.route('/_food_page') # add ingredients
@@ -58,6 +67,7 @@ def food_page():
   fridge_ingredients = request.args.get('b', 0, type=str)
   current_user = users[0]
   current_user.fridge.make_fridge(fridge_ingredients)
+  print 'HELLO THIS IS TIME GLOBAL ->>>>>>>>',time_global
   recipe_dictionaries = current_user.get_timed_recipes(time_global)
   recipe_names = []
   recipe_ids = []
