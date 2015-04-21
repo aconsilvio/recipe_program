@@ -10,9 +10,9 @@ from recipe_program import *
 flask_recipes = Flask(__name__)
 
 # Global vars
-users = []
-foods = []
-recipes= []
+#users = []
+#foods = []
+#recipes= []
 time_global = int
 current_user = None
 
@@ -101,7 +101,7 @@ if __name__ == '__main__':
     #db.users.remove()
     #print db.users.find_one()
     #db.recipes.remove()
-    #print db.recipes.find_one({'ingredient': 'sour cream'})
+    #print db.recipes.find_one({'ingredient': 'cinnamon'})
     flask_recipes.run(host="0.0.0.0",port=int("8081"),debug=True)
   # flask_recipes.run(
   #   host = "0.0.0.0",
