@@ -14,6 +14,7 @@ users = []
 foods = []
 recipes= []
 time_global = int
+current_user = None
 
 ########################### MONGOLAB ##############
 server = 'ds061661.mongolab.com'
@@ -40,16 +41,18 @@ def homepage():
 def make_user():
   names = request.args.get('names', 1, type=str)
   global db
+  global current_user
   current_user = User(names, db)
   db.users.insert({"user": current_user.name, "pantry": None})
-  users.append(current_user)
+  #users.append(current_user)
   return jsonify(name=current_user.name, pantry = current_user.get_pantry())
   #return jsonify(result=names)
 
 @flask_recipes.route('/_update_pantry') # add ingredients
 def update_pantry():
   pantry_ingredients = request.args.get('pantry', '', type=str)
-  current_user = users[0]
+  global current_user
+  #current_user = users[0]
   current_user.pantry.make_pantry(pantry_ingredients)
   current_user.pantry.save_pantry()
   return jsonify(pantry = pantry_ingredients);
@@ -66,7 +69,8 @@ def timed_recipes():
 @flask_recipes.route('/_food_page') # add ingredients
 def food_page():
   fridge_ingredients = request.args.get('b', 0, type=str)
-  current_user = users[0]
+  global current_user
+  #current_user = users[0]
   current_user.fridge.make_fridge(fridge_ingredients)
   recipe_dictionaries = current_user.get_timed_recipes(time_global)
   recipe_names = []
@@ -97,9 +101,8 @@ if __name__ == '__main__':
     #db.users.remove()
     #print db.users.find_one()
     #db.recipes.remove()
-    #print db.recipes.find_one()
+    #print db.recipes.find_one({'ingredient': 'sour cream'})
     flask_recipes.run(host="0.0.0.0",port=int("8081"),debug=True)
-
   # flask_recipes.run(
   #   host = "0.0.0.0",
   #   port = int("8080"),
