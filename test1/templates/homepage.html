@@ -2,8 +2,9 @@
 <html lang="en">
   <head>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/custom.css" rel="stylesheet">
+
 
   <script type=text/javascript> // for our new box
     $(function() {
@@ -53,7 +54,8 @@
         }, function(data) {
           var htmlResults = "";
           for (var i = 0; i < data.names.length; i ++) {
-            htmlResults += "<img src ='"+data.pics[i]+"'><br><a href='http://www.yummly.com/recipe/" + data.ids[i] + "'>" + data.names[i] + "</a>  Cooktime: "+ data.times[i]+" minutes<br><br>";
+            htmlResults += 
+            "<div class='col-md-3'><div class='work-button'><a href='http://www.yummly.com/recipe/" + data.ids[i] + "'><br><img class='work-hover' src ='"+data.pics[i]+"' alt=''/><div class='work-sub'>"+data.names[i]+"<br><br>Cooktime: "+ data.times[i]+" minutes</div></div></a><br><br></div>";
           }
           console.log("We are here");
           $("#result2").html(htmlResults);
@@ -83,14 +85,23 @@
     <a href="javascript:void();" id="updatepantry">Update Pantry</a><br>    
     <span id="result_pantry"> </span>
     <br><br>
-    <input type="text" size="25" name="time"> 
-    <a href="javascript:void();" id="calculatetime">Max Total Cooktime (minutes)</a><br>    
-    <span id="result_time"> </span>
+    Max Total Cooktime!<br>
+  <input type="range" min="0" max="200" step="1" name = 'time' oninput="outputUpdate(value)"/>
+  <output for='fader' id='time'>100</output> minutes<br>
+  <script type=text/javascript>
+    function outputUpdate(time) {
+    document.querySelector('#time').value = time;
+    }
+  </script>
+    <a href="javascript:void();" id="calculatetime">Confirm</a><br>    
+    <span id="result_time"> </span> 
     <br><br>
     <p>Type of list of available ingredients seperated by commas.<br>
     <input type="text" size="50" name="b"> 
-    <a href="javascript:void();" id="calculate2">Find recipes!</a><br>    
+    <a href="javascript:void();" id="calculate2">Find recipes!</a><br> 
+    <div class = 'container'><div class="row"> <br>   
     <span id="result2"> </span>
+  </div></div>
       </form>
       </div>
     </div>

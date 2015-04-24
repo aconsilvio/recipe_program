@@ -77,13 +77,17 @@ def food_page():
   recipe_ids = []
   recipe_pics = []
   cooktimes = []
+  new_pics = []
   for i in range(len(recipe_dictionaries)):
     recipe_names.append(recipe_dictionaries[i]['recipeName'].encode('ascii','ignore'))
     recipe_ids.append(recipe_dictionaries[i]['id'].encode('ascii','ignore'))
     recipe_pics.append(recipe_dictionaries[i]['imageUrlsBySize']['90'].encode('ascii','ignore'))
     cooktimes.append(int(recipe_dictionaries[i]['totalTimeInSeconds']/60.0))
   # return [jsonify(name = recipe_name, id = recipe_id) for recipe_name, recipe_id in zip(recipe_names, recipe_ids)]
-  return jsonify(names = recipe_names, ids = recipe_ids, pics = recipe_pics, times = cooktimes);
+  for i in range(len(recipe_pics)):
+    ##[-4:-2]
+    new_pics.append(recipe_pics[i][:len(recipe_pics[i])-4]+'250-c')  #this calls an image that is 300x300 px
+  return jsonify(names = recipe_names, ids = recipe_ids, pics = new_pics, times = cooktimes);
 
 
 
