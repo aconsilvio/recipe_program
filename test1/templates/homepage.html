@@ -69,7 +69,7 @@
   <body>
     <div class="container">
       <div class="header">
-        <center><h1 class="text-muted"> Rapid Recipes</h1>
+        <center><h1> Rapid Recipes</h1>
         <h4 class = "text-muted">#StayHungry</h4>
       </center>
       </div>
@@ -77,19 +77,21 @@
       <div>
           <div class="container">
       <div class="header">  
-      <h4 class = "text-muted">Enter your username.</h4>
+      <h4 class = "text-muted"><circles>1</circles> Enter your username.</h4>
+    <div class = "paddingdiv">
     <input type="text" size="25" name="names"> <br>
     <a href="javascript:void();" id="calculate">Log in.</a><br>    
     <h5 class = "text-muted">Logged in as: <br></h5><span id="result"> </span>
         <br><br>
-    <h4 class = "text-muted"> Update your pantry. </h4>
-    <h6 class = "text-muted">If you need to update your pantry (see above), type of list of pantry ingredients seperated by commas.</h6>
+    </div>
+    <h4 class = "text-muted"><circles>2</circles> Update your pantry. </h4>
+    <div class="paddingdiv"><h6 class = "text-muted">If you need to update your pantry (see above), type of list of pantry ingredients seperated by commas.</h6>
     <input type="text" size="50" name="pantry"> <br>
     <a href="javascript:void();" id="updatepantry">Update Pantry</a><br>    
     <span id="result_pantry"> </span>
-    <br><br>
-    <h4 class = "text-muted">Limit Total Prep Time </h4>
-    <h6 class = "text-muted">Max total cooktime in minutes</h6>
+    <br><br></div>
+    <h4 class = "text-muted"><circles>3</circles> Limit Total Prep Time </h4>
+    <div class = "paddingdiv"><h6 class = "text-muted">Max total cooktime in minutes</h6>
   <input type="range" min="0" max="200" step="1" name = 'time' oninput="outputUpdate(value)"/><br>
   <output for='fader' id='time'>100</output> minutes<br>
   <script type=text/javascript>
@@ -99,13 +101,16 @@
   </script>
     <a href="javascript:void();" id="calculatetime">Confirm</a><br>    
     <span id="result_time"> </span> 
+  </div>
     <br><br>
-    <h4 class = "text-muted"> Enter new ingredients </h4>
+    <h4 class = "text-muted"><circles>4</circles> Enter new ingredients </h4>
+    <div class = "paddingdiv">
     <h6 class = "text-muted">Type of list of available ingredients seperated by commas.</h6>
     <input type="text" size="50" name="b"> <br>
     <a href="javascript:void();" id="calculate2">Find recipes!</a><br> 
     <div class = 'container'><div class="row"> <br>   
     <span id="result2"> </span>
+  </div>
   </div></div>
       </form>
 </div></div>

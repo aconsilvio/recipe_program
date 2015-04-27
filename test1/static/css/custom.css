@@ -115,7 +115,21 @@ input[type="range"]::-webkit-slider-thumb {
 
 h1 {
   text-align: center;
-  font-family: sans-serif;
+  font-family: 'Lobster',sans-serif;
   color: #ff7452;
+  opacity: .75;
 
+}
+
+circles {
+    border-radius: 75px;
+    background: #ff7452;
+    color : white;
+    padding : 5px 10px;
+    opacity: .75;
+    /* http://stackoverflow.com/questions/9358882/how-to-make-a-circle-around-content-using-css */
+}
+
+.paddingdiv {
+   margin-left: 35px;
 }
