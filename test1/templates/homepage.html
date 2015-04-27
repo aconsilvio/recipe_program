@@ -55,7 +55,7 @@
           var htmlResults = "";
           for (var i = 0; i < data.names.length; i ++) {
             htmlResults += 
-            "<div class='col-md-3'><div class='work-button'><a href='http://www.yummly.com/recipe/" + data.ids[i] + "'><br><img class='work-hover' src ='"+data.pics[i]+"' alt=''/><div class='work-sub'>"+data.names[i]+"<br><br>Cooktime: "+ data.times[i]+" minutes</div></div></a><br><br></div>";
+            "<div class='col-md-3'><div class='work-button'><a href='http://www.yummly.com/recipe/" + data.ids[i] + "'><br><img class='work-hover' src ='"+data.pics[i]+"' alt=''/><div class='work-sub'><b>"+data.names[i]+"</b><br><br>Cooktime: "+ data.times[i]+" minutes</div></div></a><br><br></div>";
           }
           console.log("We are here");
           $("#result2").html(htmlResults);
@@ -69,24 +69,28 @@
   <body>
     <div class="container">
       <div class="header">
-        <h3 class="text-muted"> Rapid Recipes</h3>
-        <h4 class = "text-muted">Welcome to our program!  We are here to save you from your hungry days (and nights).</h4>
-        <h4 class = "text-muted">Login with your name, and then enter a list of ingredients that you have available.</h4><br>
+        <center><h1 class="text-muted"> Rapid Recipes</h1>
+        <h4 class = "text-muted">#StayHungry</h4>
+      </center>
       </div>
       <hr/>
       <div>
-      <p>Enter your username.<br>
-    <input type="text" size="25" name="names"> 
+          <div class="container">
+      <div class="header">  
+      <h4 class = "text-muted">Enter your username.</h4>
+    <input type="text" size="25" name="names"> <br>
     <a href="javascript:void();" id="calculate">Log in.</a><br>    
-    Logged in as: <span id="result"> </span>
+    <h5 class = "text-muted">Logged in as: <br></h5><span id="result"> </span>
         <br><br>
-    <p>If you need to update your pantry (see above), type of list of pantry ingredients seperated by commas.<br>
-    <input type="text" size="50" name="pantry"> 
+    <h4 class = "text-muted"> Update your pantry. </h4>
+    <h6 class = "text-muted">If you need to update your pantry (see above), type of list of pantry ingredients seperated by commas.</h6>
+    <input type="text" size="50" name="pantry"> <br>
     <a href="javascript:void();" id="updatepantry">Update Pantry</a><br>    
     <span id="result_pantry"> </span>
     <br><br>
-    Max Total Cooktime!<br>
-  <input type="range" min="0" max="200" step="1" name = 'time' oninput="outputUpdate(value)"/>
+    <h4 class = "text-muted">Limit Total Prep Time </h4>
+    <h6 class = "text-muted">Max total cooktime in minutes</h6>
+  <input type="range" min="0" max="200" step="1" name = 'time' oninput="outputUpdate(value)"/><br>
   <output for='fader' id='time'>100</output> minutes<br>
   <script type=text/javascript>
     function outputUpdate(time) {
@@ -96,13 +100,15 @@
     <a href="javascript:void();" id="calculatetime">Confirm</a><br>    
     <span id="result_time"> </span> 
     <br><br>
-    <p>Type of list of available ingredients seperated by commas.<br>
-    <input type="text" size="50" name="b"> 
+    <h4 class = "text-muted"> Enter new ingredients </h4>
+    <h6 class = "text-muted">Type of list of available ingredients seperated by commas.</h6>
+    <input type="text" size="50" name="b"> <br>
     <a href="javascript:void();" id="calculate2">Find recipes!</a><br> 
     <div class = 'container'><div class="row"> <br>   
     <span id="result2"> </span>
   </div></div>
       </form>
+</div></div>
       </div>
     </div>
   </body>
