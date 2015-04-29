@@ -80,6 +80,8 @@ class User(object):
       if good_recipe:
         if all_recipes[i] not in recipe_copy:
           recipe_copy.append(all_recipes[i])
+      
+
     return recipe_copy
 
 
