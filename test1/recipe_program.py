@@ -34,11 +34,14 @@ class User(object):
     users = self.db.users
     user = users.find_one({"user": self.name})
     
-    if user["pantry"] == None:
-      # If the pantry is not stored, return an empty string
-      return "No stored pantry"
+    if user == None: 
+      # If the user does not 
+      users.insert({"user": self.name, "pantry": None})
+      return "" #" New user, no stored pantry"
+    elif user["pantry"] == None:
+      return "" #" No stored pantry"
     else:
-      # Otherwise, return the pantry
+      # Otherwise, build the pantry from the db, and return the pantry
       ingredients = ast.literal_eval(user["pantry"]) # Convert str to list
       ingredient_list = [] # Empty list to store ingredient objects
       for i in ingredients:
@@ -118,6 +121,8 @@ class User(object):
     if recipe != None:
       return recipe["recipe_list"]
     # Otherwise call url
+    elif str(ingredient) == "":
+      return []
     else:
       empty_page = 0
       recipe_list = []
@@ -173,7 +178,20 @@ class Pantry(Shelf):
   def __init__(self, username, db):
     self.username = username
     self.db = db # the database
-    self.ingredients = []
+    self.ingredients = [] #update_from_db()
+
+  # def update_from_db(self):
+  #   """ Returns the initial contents of the pantry.
+  #       If the user exists, load the pantry from the db
+  #       If the user does not exist, make an empty list
+  #   """
+  #   users = self.db.users
+  #   user = users.find_one({"user": self.username})
+  #   if user == None:
+  #     return []
+  #   else:
+  #     str_ingredients = user["pantry"]
+
     
   def make_pantry(self, ingredients_string):
     """ Call parent function to build pantry """
@@ -206,8 +224,20 @@ class Fridge(Shelf):
 
 if __name__ == '__main__':
   # Initialize MongoDB
-  client = MongoClient()
-  db = client.users
+  # client = MongoClient()
+  # db = client.users
+  server = 'ds061661.mongolab.com'
+  port = 61661
+  db_name = 'recipe_program_db'
+  username = 'anisha'
+  password = 'recipe' 
+  import pymongo
+  from pymongo import MongoClient
+
+  url = "mongodb://"+username+":"+password+"@"+server+":"+str(port)+"/"+db_name 
+
+  client = MongoClient(url)
+  db = client[db_name] # Get the database
   
   # Make a new user and pantry
   # current_user = User('bob', db)
