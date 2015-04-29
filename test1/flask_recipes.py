@@ -6,6 +6,7 @@ from pickle import dump, load
 from os.path import exists
 # from recipe_program import *
 from recipe_program import *
+import ast
 
 flask_recipes = Flask(__name__)
 
@@ -43,9 +44,18 @@ def make_user():
   global db
   global current_user
   current_user = User(names, db)
-  db.users.insert({"user": current_user.name, "pantry": None})
+  # Adding the user to the db occurs in the user class,
+  # only in the get_pantry method
+  #db.users.insert({"user": current_user.name, "pantry": current_user.get_pantry()})
   #users.append(current_user)
-  return jsonify(name=current_user.name, pantry = current_user.get_pantry())
+  str_pantry = current_user.get_pantry()
+  if str_pantry == "":
+    return jsonify(name=current_user.name, pantry = " No Pantry")
+  list_ingredients = ast.literal_eval(str_pantry) # Convert str to list
+  str_pantry = " Pantry: " + list_ingredients[0]
+  for i in range(1, len(list_ingredients)):
+    str_pantry += ", " + list_ingredients[i]
+  return jsonify(name=current_user.name, pantry = str_pantry)
   #return jsonify(result=names)
 
 @flask_recipes.route('/_update_pantry') # add ingredients
