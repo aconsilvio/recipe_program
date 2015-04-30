@@ -1,22 +1,29 @@
 """
-Recipe Program Skeleton
-Anisha, Annabel, Maggie
+Recipe Program Back-end
+Contains class structure including User, Shelf, Fridge, Pantry, Ingredients
+User class has functions to search recipe database
+File to be called from flask_recipes.py program
+
+Authors: Anisha, Annabel, Maggie
 """
+
+############################ IMPORT LIBRARIES #####################
+
 import urllib   # urlencode function
 import urllib2  # urlopen function (better than urllib version)
 import json
-from pickle import dump, load
-from os.path import exists
-#import pymongo
 from pymongo import MongoClient
 import ast # This allows for convertion between str to list
 
-
-
-############################ CLASSES ##############
+############################ CLASSES ##############################
 
 class User(object):
-  """ Class that defines a user with and initalizes the pantry and fridge """
+  """ Class that defines a user
+      name: username (a string), the identifier
+      pantry: new empty pantry object
+      fridge: new empty fridge object
+      db: the database that stores users and recipes
+  """
   def __init__(self, name, db):
     self.name = name
     self.pantry = Pantry(name, db)
@@ -30,18 +37,18 @@ class User(object):
   def get_pantry(self):
     """ Return the pantry if it exists, or an empty string """
     # Look for the user in the database
-    #return "this is a test pantry"
     users = self.db.users
     user = users.find_one({"user": self.name})
-    
+
+    # If the user does not exist in the database, make a new entry
     if user == None: 
-      # If the user does not 
       users.insert({"user": self.name, "pantry": None})
-      return "" #" New user, no stored pantry"
+      return ""
+    # If the user exists but the pantry does not, return an empty strign
     elif user["pantry"] == None:
-      return "" #" No stored pantry"
+      return ""
+    # Otherwise, the user exists. Build up and return the pantry from the db
     else:
-      # Otherwise, build the pantry from the db, and return the pantry
       ingredients = ast.literal_eval(user["pantry"]) # Convert str to list
       ingredient_list = [] # Empty list to store ingredient objects
       for i in ingredients:
@@ -53,7 +60,8 @@ class User(object):
 
   def get_useful_recipes(self):
     """ Generate recipes based on fridge and pantry with yummly API
-        TODO: Memoize ingredients
+        returns a list of recipes that do not contain any ingredients
+        that are not in the users fridge or pantry
     """
     # Build up a list of all recipes that contain at least one ingredient
     all_recipes = []
@@ -62,8 +70,8 @@ class User(object):
       all_recipes += (self.get_all_recipes(ingredient))
 
     # Only save recipes where you have all the ingredients
-    recipe_copy = [] #empty list, will append good recipes
-    for i in range(len(all_recipes)): #loop through all recipes
+    recipe_copy = [] # empty list, will append good recipes
+    for i in range(len(all_recipes)): # loop through all recipes
       good_recipe = True
       # Get list of all ingredients necessary to make the recipe
       required_ingredients = all_recipes[i][u'ingredients']
@@ -83,12 +91,11 @@ class User(object):
       if good_recipe:
         if all_recipes[i] not in recipe_copy:
           recipe_copy.append(all_recipes[i])
-      
-
     return recipe_copy
 
 
   def get_timed_recipes(self, time):
+    """ Returns recipes with a parameter of under a given cooktime """
     recipes = self.get_useful_recipes()
     timed_recipes = []
     for i in range(len(recipes)):
@@ -97,7 +104,7 @@ class User(object):
     return timed_recipes
   
   def get_url(self, ingredient):
-    """ Format url for api call """
+    """ Format url for yummly api call """
     for letter in ingredient.name:
       formatted = ingredient.name.replace(' ',"%20")
     url = "http://api.yummly.com/v1/api/recipes?_app_id=c95876fa&requirePictures=true&_app_key=ef0c2016540a55876cffbabe427d6d83&allowedIngredient[]=%s" % (formatted)
@@ -117,7 +124,7 @@ class User(object):
     """ Gets a list of all recipes for a given ingredient """
     recipes = self.db.recipes
     recipe = recipes.find_one({"ingredient": str(ingredient)})
-    # Check to see if the list has been memoized
+    # Check to see if the list has been memoized, and read it from the db
     if recipe != None:
       return recipe["recipe_list"]
     # Otherwise call url
@@ -142,7 +149,6 @@ class Ingredient(object):
   """User input ingredients that they have"""
   def __init__(self, ingredient):
     self.name = ingredient
-    ## will eventually put in quantity, allergns, etc.
 
   def __str__(self):
     """ Returns a string of the name """
@@ -175,23 +181,11 @@ class Shelf(object):
 
 
 class Pantry(Shelf):
+  """ Extends shelf, is saved for each user """
   def __init__(self, username, db):
     self.username = username
     self.db = db # the database
-    self.ingredients = [] #update_from_db()
-
-  # def update_from_db(self):
-  #   """ Returns the initial contents of the pantry.
-  #       If the user exists, load the pantry from the db
-  #       If the user does not exist, make an empty list
-  #   """
-  #   users = self.db.users
-  #   user = users.find_one({"user": self.username})
-  #   if user == None:
-  #     return []
-  #   else:
-  #     str_ingredients = user["pantry"]
-
+    self.ingredients = []
     
   def make_pantry(self, ingredients_string):
     """ Call parent function to build pantry """
@@ -209,8 +203,8 @@ class Pantry(Shelf):
     users.remove({"user": self.username})
     users.insert_one(user)
     
-    
 class Fridge(Shelf):
+  """ List of ingredients that is temporary, not saved with the user """
   def __init__(self):
     self.ingredients = None
     
@@ -249,13 +243,13 @@ if __name__ == '__main__':
   # print type(str(current_user.pantry))
 
   # Get recipes
-##  current_user.fridge.make_fridge("pineapple, flour, butter, milk, salt, eggs, sugar, vanilla, water, chicken, oil, baking soda, baking powder, chocolate, corn starch, corn, chips, brown sugar, coffee, carrots, potatoes, steak, fish, salmon")
-##  print current_user.fridge
-##  print current_user.get_useful_recipes()
+  # current_user.fridge.make_fridge("pineapple, flour, butter, milk, salt, eggs, sugar, vanilla, water, chicken, oil, baking soda, baking powder, chocolate, corn starch, corn, chips, brown sugar, coffee, carrots, potatoes, steak, fish, salmon")
+  # print current_user.fridge
+  # print current_user.get_useful_recipes()
 
   # Show that databases work
-##  new_user = User('bob', db)
-##  print new_user.name + "'s saved pantry: ", new_user.get_pantry()
+  # new_user = User('bob', db)
+  # print new_user.name + "'s saved pantry: ", new_user.get_pantry()
 
   
   
