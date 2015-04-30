@@ -2,6 +2,8 @@ Rapid Recipes: Recipe Finder Program
 Created by Annabel Consilvio, Anisha Nakagawa, and Maggie Jakus
 --------------------------------------------------------------------
 TO RUN:
+--------------------------------------------------------------------
+
 	-open http://rapid-recipes.herokuapp.com/ in any browser
 
 	---or---
@@ -14,6 +16,8 @@ TO RUN:
  		 * Restarting with stat
 --------------------------------------------------------------------
 Design Decisions and Issues
+--------------------------------------------------------------------
+
 	- Currently, this program is able to search for recipes & correctly generate a page
 		with images and text that correspond to the inputs of the user.  This only works
 		for one user at a time because of our use of global variables.  In future iterations,
@@ -35,16 +39,22 @@ Design Decisions and Issues
 		it is not the best practice and we would like to fix this.
 --------------------------------------------------------------------
 Class Structure
+--------------------------------------------------------------------
+
 	- The class structure is contained in the recipe_program.py file. The main user class contrains a fridge and pantry, which are lists of ingredients used to search for recipes. The pantry class is saved for the specific user.
 
 --------------------------------------------------------------------
 Yummly API
+--------------------------------------------------------------------
+
 	- This API works by searching for recipes based on an ingredient; however, it gives you 
 		any recipe that include this ingredient.  Because our program is designed to search
 		for essentially the opposite of this, we needed to develop the following algorithm in
 		order to search efficiently. 
 --------------------------------------------------------------------
 Algorithms
+--------------------------------------------------------------------
+
 	- The algorithm in recipe_program.py works by using the Yummly API to search for any recipes
 		that have the specified ingredient in them.  The program then runs through each ingredient
 		and compiles a list of recipes that have not been filtered and have many more ingredients 
@@ -55,13 +65,16 @@ Algorithms
 		suitable to show in the website.
 --------------------------------------------------------------------
 Heroku
+--------------------------------------------------------------------
 	- Heroku is the server that hosts the web application. It runs the flask file at the url rapid-recipes.herokuapp.com
 
 --------------------------------------------------------------------
 Flask
+--------------------------------------------------------------------
 	- Flask is an add on to Python that allows you to build a web-app with a python back-end.
 		It integrates python files and html files with javascript.  You will need this to run
 		the program.
 --------------------------------------------------------------------
 MongoDB
+--------------------------------------------------------------------
 	- Used as the database for storing existing users and pantries, as well as for memoizing the recipes for common ingredients. Uses MongoLab to host the database on a server.
