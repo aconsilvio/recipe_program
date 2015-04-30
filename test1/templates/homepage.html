@@ -4,9 +4,10 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/css/custom.css" rel="stylesheet">
-
-
-  <script type=text/javascript> // for our new box
+<!--The javascript in this code is used for communication between the HTML and python.-->
+<!--The following javascript uses the corresponding python function to initate a new user
+from raw input on the webapge and then prints the user & its pantry on the webpage-->
+  <script type=text/javascript> 
     $(function() {
       $('a#calculate').bind('click', function() {
         $.getJSON('/_make_user', {
@@ -19,9 +20,9 @@
       });
     });
   </script>
-
-  <script type=text/javascript> // for our new box
-    $(function() {
+<!--The following javascript uses the corresponding python function to update the pantry of a user
+from raw input on the webapge and then prints the new pantry on the webpage-->
+  <script type=text/javascript> 
       $('a#updatepantry').bind('click', function() {
         $.getJSON('/_update_pantry', {
           pantry: $('input[name="pantry"]').val(),
@@ -32,8 +33,9 @@
       });
     });
   </script>
-
-  <script type=text/javascript> // for our new box
+<!--The following javascript uses the corresponding python function to define the max cooktime for the search
+from raw input on the webapge and then prints max cooktime-->
+  <script type=text/javascript> 
     $(function() {
       $('a#calculatetime').bind('click', function() {
         $.getJSON('/_timed_recipes', {
@@ -45,17 +47,18 @@
       });
     });
   </script>
-
-  <script type=text/javascript>
-    $(function() {
+<!--The following javascript uses the corresponding python function search for recipes containing the available
+ingredients.  It returns HTML that generates a picture with a title, maxcooktime, and link to instructions.-->
+  <script type=text/javascript> 
       $('a#calculate2').bind('click', function() {
         $.getJSON('/_food_page', {
           b: $('input[name="b"]').val(),
         }, function(data) {
           var htmlResults = "";
+          //This is html code that generates an image, title, link, maxcooktime combo for each recipes returned by the python program
           for (var i = 0; i < data.names.length; i ++) {
             htmlResults += 
-            "<div class='col-md-3'><div class='work-button'><a href='http://www.yummly.com/recipe/" + data.ids[i] + "'target='_blank'><br><img class='work-hover' src ='"+data.pics[i]+"' alt=''/><div class='work-sub'><b>"+data.names[i]+"</b><br><br>Cooktime: "+ data.times[i]+" minutes</div></div></a><br><br></div>";
+            "<div class='col-md-3'><div class='work-button'><a href='http://www.yummly.com/recipe/" + data.ids[i] + "'target='_blank'><br><img class='work-hover' src ='"+data.pics[i]+"' alt=''/><div class='work-sub'><b>"+data.names[i]+"</b><br><br>Cooktime: "+ data.times[i]+" minutes</div></div></a><br><br></div>"; 
           }
           htmlResults += "<p> No more recipes to display </p>"
           console.log("We are here");
@@ -68,7 +71,7 @@
 
   </head>
   <body>
-    <div class="container">
+    <div class="container"> 
       <div class="header">
         <center><h1> Rapid Recipes</h1>
         <h4 class = "text-muted">#StayHungry</h4>
@@ -77,44 +80,51 @@
       <hr/>
       <div>
           <div class="container">
-      <div class="header">  
-      <h4 class = "text-muted"><circles>1</circles> Enter your username.</h4>
-    <div class = "paddingdiv">
-    <input type="text" size="25" name="names"> <br>
-    <a href="javascript:void();" id="calculate">Log in.</a><br>    
-    <h5 class = "text-muted">Logged in as: <br></h5><span id="result"> </span>
-        <br><br>
-    </div>
-    <h4 class = "text-muted"><circles>2</circles> Update your pantry. </h4>
-    <div class="paddingdiv"><h6 class = "text-muted">If you need to update your pantry (see above), type of list of pantry ingredients seperated by commas.</h6>
-    <input type="text" size="50" name="pantry"> <br>
-    <a href="javascript:void();" id="updatepantry">Update Pantry</a><br>    
-    <span id="result_pantry"> </span>
-    <br><br></div>
-    <h4 class = "text-muted"><circles>3</circles> Limit Total Prep Time </h4>
-    <div class = "paddingdiv"><h6 class = "text-muted">Max total cooktime in minutes</h6>
-  <input type="range" min="0" max="200" step="1" name = 'time' oninput="outputUpdate(value)"/><br>
-  <output for='fader' id='time'>100</output> minutes<br>
-  <script type=text/javascript>
-    function outputUpdate(time) {
-    document.querySelector('#time').value = time;
-    }
-  </script>
-    <a href="javascript:void();" id="calculatetime">Confirm</a><br>    
-    <span id="result_time"> </span> 
-  </div>
-    <br><br>
-    <h4 class = "text-muted"><circles>4</circles> Enter new ingredients </h4>
-    <div class = "paddingdiv">
-    <h6 class = "text-muted">Type of list of available ingredients seperated by commas.</h6>
-    <input type="text" size="50" name="b"> <br>
-    <a href="javascript:void();" id="calculate2">Find recipes!</a><br> 
-    <div class = 'container'><div class="row"> <br>   
-    <span id="result2"> </span>
-  </div>
-  </div></div>
-      </form>
-</div></div>
+            <div class="header">  
+              <h4 class = "text-muted"><circles>1</circles> Enter your username.</h4>
+              <div class = "paddingdiv">
+                <input type="text" size="25" name="names"> <br>
+                <a href="javascript:void();" id="calculate">Log in.</a><br>    
+                <h5 class = "text-muted">Logged in as: <br></h5>
+                <span id="result"> </span>
+                <br><br>
+              </div>
+            <h4 class = "text-muted"><circles>2</circles> Update your pantry. </h4>
+              <div class="paddingdiv">
+                <h6 class = "text-muted">If you need to update your pantry (see above), type of list of pantry ingredients seperated by commas.</h6>
+                <input type="text" size="50" name="pantry"> <br>
+                <a href="javascript:void();" id="updatepantry">Update Pantry</a><br>    
+                <span id="result_pantry"> </span>
+                <br><br>
+              </div>
+            <h4 class = "text-muted"><circles>3</circles> Limit Total Prep Time </h4>
+              <div class = "paddingdiv">
+                <h6 class = "text-muted">Max total cooktime in minutes</h6>
+                <input type="range" min="0" max="200" step="1" name = 'time' oninput="outputUpdate(value)"/><br>
+                <output for='fader' id='time'>100</output> minutes<br>
+                <!--The following javascript displays the current value of the slider.-->
+                <script type=text/javascript>
+                  function outputUpdate(time) {
+                  document.querySelector('#time').value = time;
+                  }
+                </script>
+                  <a href="javascript:void();" id="calculatetime">Confirm</a><br>    
+                  <span id="result_time"> </span> 
+              </div>
+              <br><br>
+              <h4 class = "text-muted"><circles>4</circles> Enter new ingredients </h4>
+                <div class = "paddingdiv">
+                  <h6 class = "text-muted">Type of list of available ingredients seperated by commas.</h6>
+                  <input type="text" size="50" name="b"> <br>
+                  <a href="javascript:void();" id="calculate2">Find recipes!</a><br> 
+                  <div class = 'container'><div class="row"> <br>   
+                    <span id="result2"> </span>
+                  </div>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
       </div>
     </div>
   </body>

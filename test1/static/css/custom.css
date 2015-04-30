@@ -1,3 +1,5 @@
+/* Slider code editing influenced form https://jsfiddle.net/leaverou/BNm8j/  */
+
 input[type=range] {
     -webkit-appearance: none;
     background-color: silver;
@@ -14,15 +16,11 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 
-/*  SECTIONS  ============================================================================= */
-
 .section {
 	clear: both;
 	padding: 0px;
 	margin: 0px;
 }
-
-/*  GROUPING  ============================================================================= */
 
 
 .group:before,
@@ -34,30 +32,23 @@ input[type="range"]::-webkit-slider-thumb {
     clear:both;
 }
 .group {
-    zoom:1; /* For IE 6/7 (trigger hasLayout) */
+    zoom:1; 
 }
-
-/*  GRID COLUMN SETUP   ==================================================================== */
-
+/* Creating column divs for images */
 .col {
 	display: block;
 	float:left;
 	margin: 1% 0 1% 1.6%;
 }
 
-.col:first-child { margin-left: 0; } /* all browsers except IE6 and lower */
-
-
-/*  REMOVE MARGINS AS ALL GO FULL WIDTH AT 480 PIXELS */
+.col:first-child { margin-left: 0; } 
 
 @media only screen and (max-width: 480px) {
 	.col { 
 		margin: 1% 0 1% 0%;
 	}
 }
-
-
-
+/* Hover code for images, based on http://stackoverflow.com/questions/19062383/css-color-overlay-on-image-hover */
 .work-button {
   display: inline-block;
   background: none;
@@ -112,7 +103,7 @@ input[type="range"]::-webkit-slider-thumb {
   position: absolute;
 
 }
-
+/* changes color of header text */
 h1 {
   text-align: center;
   font-family: script,sans-serif;
@@ -120,7 +111,7 @@ h1 {
   opacity: .75;
 
 }
-
+/* creates circles around text */
 circles {
     border-radius: 75px;
     background: #ff7452;
@@ -129,7 +120,7 @@ circles {
     opacity: .75;
     /* http://stackoverflow.com/questions/9358882/how-to-make-a-circle-around-content-using-css */
 }
-
+/* adding a margin for forms */
 .paddingdiv {
    margin-left: 35px;
 }
