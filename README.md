@@ -35,6 +35,7 @@ Design Decisions and Issues
 		it is not the best practice and we would like to fix this.
 --------------------------------------------------------------------
 Class Structure
+	- The class structure is contained in the recipe_program.py file. The main user class contrains a fridge and pantry, which are lists of ingredients used to search for recipes. The pantry class is saved for the specific user.
 
 --------------------------------------------------------------------
 Yummly API
@@ -54,6 +55,7 @@ Algorithms
 		suitable to show in the website.
 --------------------------------------------------------------------
 Heroku
+	- Heroku is the server that hosts the web application. It runs the flask file at the url rapid-recipes.herokuapp.com
 
 --------------------------------------------------------------------
 Flask
@@ -62,4 +64,4 @@ Flask
 		the program.
 --------------------------------------------------------------------
 MongoDB
-
+	- Used as the database for storing existing users and pantries, as well as for memoizing the recipes for common ingredients. Uses MongoLab to host the database on a server.
